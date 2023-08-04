@@ -18,6 +18,7 @@ import {
   getSoulNumber,
   numberOverview,
   getMaturityNumber,
+  getYakuYear,
 } from "./utils.js";
 
 const { component: $, state: _ } = createPage(
@@ -228,6 +229,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
       tag("tr", [
         tag("th", ["西暦"]),
         tag("th", ["年齢"]),
+        tag("th", ["厄年"]),
         tag("th", ["ナンバー"]),
         tag("th", ["概要"]),
       ]),
@@ -236,6 +238,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
       tag.ex("tr", { style: "font-weight: bold;" }, [
         tag("td", [currentPYN.year]),
         tag("td", [currentPYN.age]),
+        tag("td", [getYakuYear(currentPYN.age)]),
         tag("td", [currentPYN.result]),
         tag("td", [numberOverview(currentPYN.result)]),
       ]),
@@ -248,6 +251,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
           [
             tag("td", [p.year]),
             tag("td", [p.age]),
+            tag("td", [getYakuYear(p.age)]),
             tag("td", [p.result]),
             tag("td", [numberOverview(p.result)]),
           ]
