@@ -17,7 +17,7 @@
 <body>
   <div id="container" class="uk-container">
     <div class="uk-margin-large"></div>
-    <h3 id="label-category" class="uk-heading-small">数秘術チェッカー（占い）</h3>
+    <h3 class="uk-heading-small">数秘術チェッカー（占い）</h3>
     <div class="uk-margin">
       <fieldset class="uk-fieldset">
         <div class="uk-margin">
@@ -37,21 +37,27 @@
       </div>
     </div>
     <hr />
-    <h3 id="label-category" class="uk-heading-bullet">基礎情報</h3>
+    <h3 class="uk-heading-bullet">結果コピペ用</h3>
+    <button id="btn-copy">クリップボードにコピー</button>
+    <div class="uk-margin">
+      <textarea id="form-share" style="width: 100%; height: 100px;" disabled></textarea>
+    </div>
+    <hr />
+    <h3 class="uk-heading-bullet">基礎情報</h3>
     <div class="uk-margin">
       <div id="render-basic"></div>
     </div>
-    <h3 id="label-category" class="uk-heading-bullet">インテンシティ・ライフレッスン</h3>
+    <h3 class="uk-heading-bullet">インテンシティ・ライフレッスン</h3>
     <p>能力値が高いほど意識的に能力を発揮でき、ゼロに近いほど関心が薄い。</p>
     <div class="uk-margin">
       <div id="render-intensities"></div>
     </div>
-    <h3 id="label-category" class="uk-heading-bullet">パーソナルイヤー</h3>
+    <h3 class="uk-heading-bullet">パーソナルイヤー</h3>
     <p>各年の運勢</p>
     <div class="uk-margin">
       <div id="render-years"></div>
     </div>
-    <h3 id="label-category" class="uk-heading-bullet">シェア用 URL</h3>
+    <h3 class="uk-heading-bullet">シェア用 URL</h3>
     <div class="uk-margin">
       <pre id="label-share"></pre>
       <p>※ URL には、シャッフルされた氏名のスペルと生年月日が含まれます。ご注意ください。</p>

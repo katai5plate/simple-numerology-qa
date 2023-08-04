@@ -64,15 +64,15 @@ export const getIntensityNumbers = (spel) => {
   let lastCount = null;
   ranking.forEach(({ value, count }) => {
     if (count !== lastCount) {
-      formula.push(sameCount.join("="));
+      formula.push(sameCount.join(" = "));
       sameCount = [value];
     } else {
       sameCount.push(value);
     }
     lastCount = count;
   });
-  formula.push(sameCount.join("="));
-  return { text: formula.filter((x) => x !== "").join(">"), ranking };
+  formula.push(sameCount.join(" = "));
+  return { text: formula.filter((x) => x !== "").join(" > "), ranking };
 };
 
 export const getLifeLessonNumbers = (spel) =>

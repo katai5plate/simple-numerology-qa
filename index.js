@@ -29,12 +29,16 @@ const { component: $, state: _ } = createPage(
       spel: true,
       /** @type {HTMLInputElement} */
       birth: true,
+      /** @type {HTMLTextAreaElement} */
+      share: true,
     },
     valid: {
       /** @type {HTMLSpanElement} */
       spel: true,
     },
     btn: {
+      /** @type {HTMLButtonElement} */
+      copy: true,
       /** @type {HTMLButtonElement} */
       result: true,
     },
@@ -116,6 +120,10 @@ const updateBirth = setCallback(
   }
 );
 
+setCallback($.btn.copy, ["onclick"], () => {
+  navigator.clipboard.writeText($.form.share.value);
+});
+
 const submit = setCallback($.btn.result, ["onclick"], () => {
   const { spel, birth } = _.get();
   const [y, m, d] = birth.split("-").map(Number);
@@ -152,6 +160,21 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
 
   const TABLE_CLASS = "uk-table uk-table-striped uk-table-hover uk-table-small";
 
+  $.form.share.value = "";
+
+  const basic = [
+    { label: "ライフパス", desc: "生き様", num: lifepathNumber },
+    { label: "ディスティニー", desc: "社会的立位置", num: destinyNumber },
+    { label: "ソウル", desc: "幸福感", num: soulNumber },
+    {
+      label: "パーソナリティ",
+      desc: "客観的な印象",
+      num: personalityNumber,
+    },
+    { label: "マチュリティ", desc: "人生の目標", num: maturityNumber },
+    { label: "バースデー", desc: "天性の能力", num: birthdayNumber },
+    { label: "チャレンジ", desc: "付き纏う問題", num: challengeNumber },
+  ];
   $.render.basic.innerHTML = tag.ex("table", { class: TABLE_CLASS }, [
     tag("thead", [
       tag("tr", [
@@ -162,30 +185,23 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
       ]),
     ]),
     tag("tbody", [
-      ...tag.arr(
-        [
-          { label: "ライフパス", desc: "生き様", num: lifepathNumber },
-          { label: "ディスティニー", desc: "社会的立位置", num: destinyNumber },
-          { label: "ソウル", desc: "幸福感", num: soulNumber },
-          {
-            label: "パーソナリティ",
-            desc: "客観的な印象",
-            num: personalityNumber,
-          },
-          { label: "マチュリティ", desc: "人生の目標", num: maturityNumber },
-          { label: "バースデー", desc: "天性の能力", num: birthdayNumber },
-          { label: "チャレンジ", desc: "付き纏う問題", num: challengeNumber },
-        ],
-        ({ label, desc, num }) =>
-          tag("tr", [
-            tag("td", [label]),
-            tag("td", [desc]),
-            tag("td", [`${num} (${numberToTaiheki(num)})`]),
-            tag("td", [numberOverview(num)]),
-          ])
+      ...tag.arr(basic, ({ label, desc, num }) =>
+        tag("tr", [
+          tag("td", [label]),
+          tag("td", [desc]),
+          tag("td", [`${num} (${numberToTaiheki(num)})`]),
+          tag("td", [numberOverview(num)]),
+        ])
       ),
     ]),
   ]);
+
+  $.form.share.value += basic
+    .map(
+      ({ label, desc, num }) =>
+        `${label} (${desc}):\n  [${num}] ${numberOverview(num)}`
+    )
+    .join("\n");
 
   const intensityMax = Math.max(
     ...intensityNumbers.ranking.map((item) => item.count)
@@ -222,6 +238,25 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
       ),
     ]),
   ]);
+
+  $.form.share.value += [
+    "\nインテンシティ(能力): ",
+    intensityNumbers.text,
+    ...intensityNumbers.ranking
+      .reduce(
+        (p, c) => [
+          ...p,
+          `\n  [${c.value}] x ${c.count} ${numberOverview(c.value)}`,
+        ],
+        []
+      )
+      .join(""),
+    "\nライフレッスン(無関心): ",
+    lifeLessonNumbers.join(", "),
+    ...lifeLessonNumbers
+      .reduce((p, c) => [...p, `\n  [${c}] ${numberOverview(c)}`], [])
+      .join(""),
+  ].join("");
 
   const currentYear = new Date().getFullYear();
   const currentPYN = personalYearNumbers.find((p) => p.year === currentYear);
@@ -262,6 +297,22 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
       ),
     ]),
   ]);
+  $.form.share.value += [
+    `\nパーソナルイヤー (年運): ${
+      personalYearNumbers.find((x) => x.year === currentYear).result
+    }`,
+    ...personalYearNumbers
+      .filter(({ year }) => Math.abs(year - currentYear) <= 3)
+      .reduce(
+        (p, c) => [
+          ...p,
+          `\n  ${c.year} ${c.age} 歳: [${c.result}] ${numberOverview(
+            c.result
+          )}`,
+        ],
+        []
+      ),
+  ].join("");
 });
 
 const q = location.search
