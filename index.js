@@ -19,6 +19,7 @@ import {
   numberOverview,
   getMaturityNumber,
   getYakuYear,
+  numberToTaiheki,
 } from "./utils.js";
 
 const { component: $, state: _ } = createPage(
@@ -156,7 +157,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
       tag("tr", [
         tag("th"),
         tag("th", ["説明"]),
-        tag("th", ["ナンバー"]),
+        tag("th", ["番号 (体癖)"]),
         tag("th", ["概要"]),
       ]),
     ]),
@@ -179,7 +180,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
           tag("tr", [
             tag("td", [label]),
             tag("td", [desc]),
-            tag("td", [num]),
+            tag("td", [`${num} (${numberToTaiheki(num)})`]),
             tag("td", [numberOverview(num)]),
           ])
       ),
@@ -194,7 +195,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
     tag("thead", [
       tag("tr", [
         tag("th", ["能力値"]),
-        tag("th", ["ナンバー"]),
+        tag("th", ["番号 (体癖)"]),
         tag("th", ["概要"]),
       ]),
     ]),
@@ -207,7 +208,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
           },
           [
             tag("td", [rank.count]),
-            tag("td", [rank.value]),
+            tag("td", [`${rank.value} (${numberToTaiheki(rank.value)})`]),
             tag("td", [numberOverview(rank.value)]),
           ]
         )
@@ -215,7 +216,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
       ...tag.arr(lifeLessonNumbers, (num) =>
         tag.ex("tr", { style: "font-weight: bold;" }, [
           tag("td", [0]),
-          tag("td", [num]),
+          tag("td", [`${num} (${numberToTaiheki(num)})`]),
           tag("td", [numberOverview(num)]),
         ])
       ),
@@ -230,7 +231,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
         tag("th", ["西暦"]),
         tag("th", ["年齢"]),
         tag("th", ["厄年"]),
-        tag("th", ["ナンバー"]),
+        tag("th", ["番号 (体癖)"]),
         tag("th", ["概要"]),
       ]),
     ]),
@@ -239,7 +240,9 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
         tag("td", [currentPYN.year]),
         tag("td", [currentPYN.age]),
         tag("td", [getYakuYear(currentPYN.age)]),
-        tag("td", [currentPYN.result]),
+        tag("td", [
+          `${currentPYN.result} (${numberToTaiheki(currentPYN.result)})`,
+        ]),
         tag("td", [numberOverview(currentPYN.result)]),
       ]),
       ...tag.arr(personalYearNumbers, (p) =>
@@ -252,7 +255,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
             tag("td", [p.year]),
             tag("td", [p.age]),
             tag("td", [getYakuYear(p.age)]),
-            tag("td", [p.result]),
+            tag("td", [`${p.result} (${numberToTaiheki(p.result)})`]),
             tag("td", [numberOverview(p.result)]),
           ]
         )
