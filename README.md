@@ -1,2 +1,3 @@
 # simple-numerology-qa
-シンプル数秘術診断。
+
+シンプル数秘術鑑定。
