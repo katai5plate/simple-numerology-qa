@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- UIkit CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.15.22/dist/css/uikit.min.css" />
+
+  <!-- UIkit JS -->
+  <script src="https://cdn.jsdelivr.net/npm/uikit@3.15.22/dist/js/uikit.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/uikit@3.15.22/dist/js/uikit-icons.min.js"></script>
+  <title>数秘術チェッカー</title>
+</head>
+
+<body>
+  <div id="container" class="uk-container">
+
+    <div class="uk-margin-large"></div>
+    <div class="uk-margin">
+      <fieldset class="uk-fieldset">
+        <div class="uk-margin">
+          <label class="uk-form-label" for="form-stacked-text">氏名のひらがな or スペル</label>
+          <input id="form-spel" class="uk-input" type="text" placeholder="たなかたろう / johndoe" aria-label="Input">
+          <label class="uk-form-label" for="form-stacked-text">
+            <span id="valid-spel" class="uk-label" style="display: none;"></span>
+          </label>
+        </div>
+        <div class="uk-margin">
+          <label class="uk-form-label" for="form-stacked-text">生年月日</label>
+          <input id="form-birth" class="uk-input" type="date" aria-label="Input">
+        </div>
+      </fieldset>
+      <div class="uk-margin">
+        <button id="btn-result" class="uk-button uk-button-primary uk-button-large" disabled>鑑定</button>
+      </div>
+    </div>
+    <hr />
+    <h3 id="label-category" class="uk-heading-bullet">基礎情報</h3>
+    <div class="uk-margin">
+      <div id="render-basic"></div>
+    </div>
+    <h3 id="label-category" class="uk-heading-bullet">インテンシティ・ライフレッスン</h3>
+    <div class="uk-margin">
+      <div id="render-intensities"></div>
+    </div>
+    <h3 id="label-category" class="uk-heading-bullet">パーソナルイヤー</h3>
+    <div class="uk-margin">
+      <div id="render-years"></div>
+    </div>
+    <h3 id="label-category" class="uk-heading-bullet">シェア用 URL</h3>
+    <div class="uk-margin">
+      <pre id="label-share"></pre>
+      <p>※ URL には、シャッフルされた氏名のスペルと生年月日が含まれます。ご注意ください。</p>
+    </div>
+  </div>
+  <script type="module" src="./index.js">
+  </script>
+</body>
+
+</html>
