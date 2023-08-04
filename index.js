@@ -121,6 +121,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
   $.label.share.textContent = `${location.href.split("?").at(0)}?spel=${[
     ...spel,
   ]
+    .sort()
     .sort(() => 0.5 - Math.random())
     .join("")}&birth=${birth}`;
 
