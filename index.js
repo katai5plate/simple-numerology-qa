@@ -163,16 +163,16 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
       ...tag.arr(
         [
           { label: "ライフパス", desc: "生き様", num: lifepathNumber },
-          { label: "ディスティニー", desc: "社会的位置", num: destinyNumber },
+          { label: "ディスティニー", desc: "社会的立位置", num: destinyNumber },
           { label: "ソウル", desc: "幸福感", num: soulNumber },
           {
             label: "パーソナリティ",
-            desc: "客観的印象",
+            desc: "客観的な印象",
             num: personalityNumber,
           },
           { label: "マチュリティ", desc: "人生の目標", num: maturityNumber },
-          { label: "バースデー", desc: "天性", num: birthdayNumber },
-          { label: "チャレンジ", desc: "人生の課題", num: challengeNumber },
+          { label: "バースデー", desc: "天性の能力", num: birthdayNumber },
+          { label: "チャレンジ", desc: "付き纏う問題", num: challengeNumber },
         ],
         ({ label, desc, num }) =>
           tag("tr", [
