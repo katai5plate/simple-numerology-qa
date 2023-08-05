@@ -124,4 +124,4 @@ export const numberToOverview = (num) => NUMBERS_OVERVIEW[num];
 
 export const getYakuYear = (age) => YAKU_YEARS[age] ?? "";
 
-export const numberToTaiheki = (num) => NUMBER_TO_TAIHEKI[num];
+export const numberToTaiheki = (num) => NUMBER_TO_TAIHEKI[num] || "";
