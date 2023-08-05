@@ -79,10 +79,12 @@ const createElement = (name, props, children = []) =>
 /**
  * @type {{
  *   (name: string, children?: string[]): string;
+ *   frag: (arr: string[]) => string;
  *   ex: (name: string, props: any, children?: string[]) => string;
  *   arr: <T>(arr: T[], fn: (el: T, index: number) => string) => string;
  * }}
  */
 export const tag = (name, children = []) => createElement(name, {}, children);
+tag.frag = (arr) => arr.join("");
 tag.ex = createElement;
-tag.arr = (arr, fn) => arr.reduce((p, c, i) => [...p, fn(c, i)], []);
+tag.arr = (arr, fn) => arr.reduce((p, c, i) => [...p, fn(c, i)], []).join("");

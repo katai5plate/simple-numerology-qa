@@ -1,3 +1,9 @@
+import {
+  NUMBERS_OVERVIEW,
+  NUMBER_TO_TAIHEKI,
+  YAKU_YEARS,
+} from "./constants.js";
+
 export const hiraganaToSpel = (hiraganaName) => {
   const table =
     "あ:a,い:i,う:u,え:e,お:o,か:ka,き:ki,く:ku,け:ke,こ:ko,さ:sa,し:shi,す:su,せ:se,そ:so,た:ta,ち:chi,つ:tsu,て:te,と:to,な:na,に:ni,ぬ:nu,ね:ne,の:no,は:ha,ひ:hi,ふ:fu,へ:he,ほ:ho,ま:ma,み:mi,む:mu,め:me,も:mo,や:ya,ゆ:yu,よ:yo,ら:ra,り:ri,る:ru,れ:re,ろ:ro,わ:wa,を:wo,ん:n,が:ga,ぎ:gi,ぐ:gu,げ:ge,ご:go,ざ:za,じ:ji,ず:zu,ぜ:ze,ぞ:zo,だ:da,ぢ:ji,づ:zu,で:de,ど:do,ば:ba,び:bi,ぶ:bu,べ:be,ぼ:bo,ぱ:pa,ぴ:pi,ぷ:pu,ぺ:pe,ぽ:po,きゃ:kya,きゅ:kyu,きょ:kyo,しゃ:sha,しゅ:shu,しょ:sho,ちゃ:cha,ちゅ:chu,ちょ:cho,にゃ:nya,にゅ:nyu,にょ:nyo,ひゃ:hya,ひゅ:hyu,ひょ:hyo,みゃ:mya,みゅ:myu,みょ:myo,りゃ:rya,りゅ:ryu,りょ:ryo,ぎゃ:gya,ぎゅ:gyu,ぎょ:gyo,じゃ:ja,じゅ:ju,じょ:jo,びゃ:bya,びゅ:byu,びょ:byo,ぴゃ:pya,ぴゅ:pyu,ぴょ:pyo"
@@ -114,56 +120,8 @@ export const getMaturityNumber = (lifepathNumber, destinyNumber) => {
   return sum;
 };
 
-export const numberOverview = (num) =>
-  ({
-    1: "自立、意志強くリーダー、孤立や我が優先傾向",
-    2: "協力と調和、他人思いでパートナー、過度な依存に注意",
-    3: "創造性、情熱と表現力が特徴、楽観的過ぎて現実逃避傾向",
-    4: "実務と秩序、安定と努力家、変化を嫌う保守性あり",
-    5: "自由と変化、好奇心旺盛で適応力、過度な自由欲求で無責任",
-    6: "調和と家族愛、親切で責任感、過保護で自己犠牲傾向",
-    7: "探求と内省、深遠な思索家、内向的で社交的に苦手",
-    8: "権力と物質、指導力と企業家精神、支配欲や材料主義的",
-    9: "完結と人道、広い視野と理想主義、理想高すぎて現実見失う",
-    11: "直観と啓示、霊的な視野とリーダーシップ、神経質で不安定",
-    22: "建設と大規模計画、実行力と革新、オーバーワークと焦燥感",
-    33: "教師と無私無欲、愛と調和の象徴、過度の献身と自己忘却傾向",
-  }[num]);
+export const numberToOverview = (num) => NUMBERS_OVERVIEW[num];
 
-export const getYakuYear = (age) =>
-  ({
-    24: "男-前",
-    25: "男-本",
-    26: "男-後",
-    41: "男-前",
-    42: "男-大",
-    43: "男-後",
-    60: "前",
-    61: "本",
-    62: "後",
-    18: "女-前",
-    19: "女-本",
-    20: "女-後",
-    32: "女-前",
-    33: "女-大",
-    34: "女-後",
-    36: "女-前",
-    37: "女-本",
-    38: "女-後",
-  }[age] ?? "");
+export const getYakuYear = (age) => YAKU_YEARS[age] ?? "";
 
-export const numberToTaiheki = (num) =>
-  ({
-    1: "1 >>>> 4",
-    2: "2 >> 5",
-    3: "3 + 6",
-    4: "7 >> 10",
-    5: "2 + 8",
-    6: "3 >> 9",
-    7: "1 + 7",
-    8: "4 >> 10",
-    9: "6 >>>> 9",
-    11: "2 + 5",
-    22: "4 + 7",
-    33: "3 + 6",
-  }[num]);
+export const numberToTaiheki = (num) => NUMBER_TO_TAIHEKI[num];

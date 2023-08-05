@@ -16,7 +16,7 @@ import {
   getPersonalYearNumbers,
   getPersonalityNumber,
   getSoulNumber,
-  numberOverview,
+  numberToOverview,
   getMaturityNumber,
   getYakuYear,
   numberToTaiheki,
@@ -136,12 +136,12 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
     .join("")}&birth=${birth}`;
 
   const [
-    lifepathNumber,
-    destinyNumber,
-    soulNumber,
-    personalityNumber,
-    birthdayNumber,
-    challengeNumber,
+    lifepath,
+    destiny,
+    soul,
+    personality,
+    birthday,
+    challenge,
     intensityNumbers,
     lifeLessonNumbers,
     personalYearNumbers,
@@ -156,24 +156,63 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
     getLifeLessonNumbers(spel),
     getPersonalYearNumbers(y, m, d),
   ];
-  const maturityNumber = getMaturityNumber(lifepathNumber, destinyNumber);
+  const maturity = getMaturityNumber(lifepath, destiny);
 
   const TABLE_CLASS = "uk-table uk-table-striped uk-table-hover uk-table-small";
 
   $.form.share.value = "";
 
   const basic = [
-    { label: "ライフパス", desc: "生き様", num: lifepathNumber },
-    { label: "ディスティニー", desc: "社会的立位置", num: destinyNumber },
-    { label: "ソウル", desc: "幸福感", num: soulNumber },
+    {
+      label: "ライフパス",
+      desc: "生き様",
+      num: lifepath,
+      id: "lifepath",
+      style: "font-weight: bold;",
+    },
+    { desc: "長所", overwrite: numberToOverview(lifepath).pros },
+    { desc: "短所", overwrite: numberToOverview(lifepath).cons },
+    { desc: "改善方法", overwrite: numberToOverview(lifepath).personalYear },
+    {
+      label: "ディスティニー",
+      desc: "社会的立位置",
+      num: destiny,
+      id: "destiny",
+    },
+    {
+      label: "ソウル",
+      desc: "幸福感",
+      num: soul,
+      id: "soul",
+    },
     {
       label: "パーソナリティ",
       desc: "客観的な印象",
-      num: personalityNumber,
+      num: personality,
+      id: "personality",
     },
-    { label: "マチュリティ", desc: "人生の目標", num: maturityNumber },
-    { label: "バースデー", desc: "天性の能力", num: birthdayNumber },
-    { label: "チャレンジ", desc: "付き纏う問題", num: challengeNumber },
+    {
+      label: "マチュリティ",
+      desc: "人生の目標",
+      num: maturity,
+      id: "maturity",
+    },
+    {
+      label: "バースデー",
+      desc: "天性の能力",
+      num: birthday,
+      id: "birthday",
+      style: "font-weight: bold; color: red;",
+    },
+    // { desc: "分野", overwrite: numberToOverview(birthday).intensity },
+    {
+      label: "チャレンジ",
+      desc: "付き纏う問題",
+      num: challenge,
+      id: "challenge",
+      style: "font-weight: bold; color: blue;",
+    },
+    // { desc: "更に", overwrite: numberToOverview(challenge).cons },
   ];
   $.render.basic.innerHTML = tag.ex("table", { class: TABLE_CLASS }, [
     tag("thead", [
@@ -185,12 +224,14 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
       ]),
     ]),
     tag("tbody", [
-      ...tag.arr(basic, ({ label, desc, num }) =>
-        tag("tr", [
-          tag("td", [label]),
-          tag("td", [desc]),
-          tag("td", [`${num} (${numberToTaiheki(num)})`]),
-          tag("td", [numberOverview(num)]),
+      tag.arr(basic, ({ label, desc, num, id, overwrite, style }) =>
+        tag.frag([
+          tag.ex("tr", { style }, [
+            tag("td", [label]),
+            tag("td", [desc]),
+            tag("td", [num ? `${num} (${numberToTaiheki(num)})` : ""]),
+            tag("td", [overwrite || numberToOverview(num)[id]]),
+          ]),
         ])
       ),
     ]),
@@ -198,8 +239,10 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
 
   $.form.share.value += basic
     .map(
-      ({ label, desc, num }) =>
-        `${label} (${desc}):\n  [${num}] ${numberOverview(num)}`
+      ({ label, desc, num, id, overwrite }) =>
+        `${label ? `${label} (${desc}): ${num}` : ` <${desc}>`}\n  ${
+          overwrite || (num ? numberToOverview(num)[id] : "")
+        }`
     )
     .join("\n");
 
@@ -216,24 +259,25 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
       ]),
     ]),
     tag("tbody", [
-      ...tag.arr(intensityNumbers.ranking, (rank) =>
+      ...tag.arr(intensityNumbers.ranking, ({ value: num, count }) =>
         tag.ex(
           "tr",
           {
-            style: rank.count === intensityMax ? "font-weight: bold;" : "",
+            style:
+              count === intensityMax ? "font-weight: bold; color: red;" : "",
           },
           [
-            tag("td", [rank.count]),
-            tag("td", [`${rank.value} (${numberToTaiheki(rank.value)})`]),
-            tag("td", [numberOverview(rank.value)]),
+            tag("td", [count]),
+            tag("td", [`${num} (${numberToTaiheki(num)})`]),
+            tag("td", [numberToOverview(num).intensity]),
           ]
         )
       ),
       ...tag.arr(lifeLessonNumbers, (num) =>
-        tag.ex("tr", { style: "font-weight: bold;" }, [
+        tag.ex("tr", { style: "color: blue;" }, [
           tag("td", [0]),
           tag("td", [`${num} (${numberToTaiheki(num)})`]),
-          tag("td", [numberOverview(num)]),
+          tag("td", [numberToOverview(num).intensity]),
         ])
       ),
     ]),
@@ -246,55 +290,92 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
       .reduce(
         (p, c) => [
           ...p,
-          `\n  [${c.value}] x ${c.count} ${numberOverview(c.value)}`,
+          `\n  [${c.value}] x ${c.count} ${
+            numberToOverview(c.value).intensity
+          }`,
         ],
         []
       )
       .join(""),
-    "\nライフレッスン(無関心): ",
+    "\nライフレッスン(不向き): ",
     lifeLessonNumbers.join(", "),
     ...lifeLessonNumbers
-      .reduce((p, c) => [...p, `\n  [${c}] ${numberOverview(c)}`], [])
+      .reduce(
+        (p, c) => [...p, `\n  [${c}] ${numberToOverview(c).intensity}`],
+        []
+      )
       .join(""),
   ].join("");
 
   const currentYear = new Date().getFullYear();
-  const currentPYN = personalYearNumbers.find((p) => p.year === currentYear);
-  $.render.years.innerHTML = tag.ex("table", { class: TABLE_CLASS }, [
-    tag("thead", [
-      tag("tr", [
-        tag("th", ["西暦"]),
-        tag("th", ["年齢"]),
-        tag("th", ["厄年"]),
-        tag("th", ["番号 (体癖)"]),
-        tag("th", ["概要"]),
+  $.render.years.innerHTML = tag.frag([
+    tag("details", [
+      tag("summary", ["出生～去年の結果"]),
+      tag.ex("table", { class: TABLE_CLASS }, [
+        tag("thead", [
+          tag("tr", [
+            tag("th", ["西暦"]),
+            tag("th", ["年齢"]),
+            tag("th", ["厄年"]),
+            tag("th", ["番号 (体癖)"]),
+            tag("th", ["やるべきだったこと"]),
+          ]),
+        ]),
+        tag("tbody", [
+          ...tag.arr(
+            personalYearNumbers.slice(
+              0,
+              personalYearNumbers.findIndex((x) => x.year === currentYear)
+            ),
+            (p) =>
+              tag.ex(
+                "tr",
+                {
+                  style: p.year === currentYear ? "font-weight: bold;" : "",
+                },
+                [
+                  tag("td", [p.year]),
+                  tag("td", [p.age]),
+                  tag("td", [getYakuYear(p.age)]),
+                  tag("td", [`${p.result} (${numberToTaiheki(p.result)})`]),
+                  tag("td", [numberToOverview(p.result).personalYear]),
+                ]
+              )
+          ),
+        ]),
       ]),
     ]),
-    tag("tbody", [
-      tag.ex("tr", { style: "font-weight: bold;" }, [
-        tag("td", [currentPYN.year]),
-        tag("td", [currentPYN.age]),
-        tag("td", [getYakuYear(currentPYN.age)]),
-        tag("td", [
-          `${currentPYN.result} (${numberToTaiheki(currentPYN.result)})`,
+    tag.ex("table", { class: TABLE_CLASS }, [
+      tag("thead", [
+        tag("tr", [
+          tag("th", ["西暦"]),
+          tag("th", ["年齢"]),
+          tag("th", ["厄年"]),
+          tag("th", ["番号 (体癖)"]),
+          tag("th", ["やるべきこと"]),
         ]),
-        tag("td", [numberOverview(currentPYN.result)]),
       ]),
-      ...tag.arr(personalYearNumbers, (p) =>
-        tag.ex(
-          "tr",
-          {
-            style: p.year === currentYear ? "font-weight: bold;" : "",
-          },
-          [
-            tag("td", [p.year]),
-            tag("td", [p.age]),
-            tag("td", [getYakuYear(p.age)]),
-            tag("td", [`${p.result} (${numberToTaiheki(p.result)})`]),
-            tag("td", [numberOverview(p.result)]),
-          ]
-        )
-      ),
+      tag("tbody", [
+        ...tag.arr(
+          personalYearNumbers.slice(
+            personalYearNumbers.findIndex((x) => x.year === currentYear)
+          ),
+          (p) =>
+            tag.ex(
+              "tr",
+              {
+                style: p.year === currentYear ? "font-weight: bold;" : "",
+              },
+              [
+                tag("td", [p.year]),
+                tag("td", [p.age]),
+                tag("td", [getYakuYear(p.age)]),
+                tag("td", [`${p.result} (${numberToTaiheki(p.result)})`]),
+                tag("td", [numberToOverview(p.result).personalYear]),
+              ]
+            )
+        ),
+      ]),
     ]),
   ]);
   $.form.share.value += [
@@ -306,9 +387,9 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
       .reduce(
         (p, c) => [
           ...p,
-          `\n  ${c.year} ${c.age} 歳: [${c.result}] ${numberOverview(
-            c.result
-          )}`,
+          `\n  ${c.year} ${c.age} 歳: [${c.result}] ${
+            numberToOverview(c.result).personalYear
+          }`,
         ],
         []
       ),
