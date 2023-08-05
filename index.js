@@ -19,7 +19,6 @@ import {
   numberToOverview,
   getMaturityNumber,
   getYakuYear,
-  numberToTaiheki,
 } from "./utils.js";
 
 const { component: $, state: _ } = createPage(
@@ -219,7 +218,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
       tag("tr", [
         tag("th"),
         tag("th", ["説明"]),
-        tag("th", ["番号 (体癖)"]),
+        tag("th", ["番号"]),
         tag("th", ["概要"]),
       ]),
     ]),
@@ -229,7 +228,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
           tag.ex("tr", { style }, [
             tag("td", [label]),
             tag("td", [desc]),
-            tag("td", [num ? `${num} (${numberToTaiheki(num)})` : ""]),
+            tag("td", [num || ""]),
             tag("td", [overwrite || numberToOverview(num)[id]]),
           ]),
         ])
@@ -254,7 +253,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
     tag("thead", [
       tag("tr", [
         tag("th", ["能力値"]),
-        tag("th", ["番号 (体癖)"]),
+        tag("th", ["番号"]),
         tag("th", ["概要"]),
       ]),
     ]),
@@ -268,7 +267,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
           },
           [
             tag("td", [count]),
-            tag("td", [`${num} (${numberToTaiheki(num)})`]),
+            tag("td", [num]),
             tag("td", [numberToOverview(num).intensity]),
           ]
         )
@@ -276,7 +275,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
       ...tag.arr(lifeLessonNumbers, (num) =>
         tag.ex("tr", { style: "color: blue;" }, [
           tag("td", [0]),
-          tag("td", [`${num} (${numberToTaiheki(num)})`]),
+          tag("td", [num]),
           tag("td", [numberToOverview(num).intensity]),
         ])
       ),
@@ -317,7 +316,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
             tag("th", ["西暦"]),
             tag("th", ["年齢"]),
             tag("th", ["厄年"]),
-            tag("th", ["番号 (体癖)"]),
+            tag("th", ["番号"]),
             tag("th", ["やるべきだったこと"]),
           ]),
         ]),
@@ -337,7 +336,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
                   tag("td", [p.year]),
                   tag("td", [p.age]),
                   tag("td", [getYakuYear(p.age)]),
-                  tag("td", [`${p.result} (${numberToTaiheki(p.result)})`]),
+                  tag("td", [p.result]),
                   tag("td", [numberToOverview(p.result).personalYear]),
                 ]
               )
@@ -351,7 +350,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
           tag("th", ["西暦"]),
           tag("th", ["年齢"]),
           tag("th", ["厄年"]),
-          tag("th", ["番号 (体癖)"]),
+          tag("th", ["番号"]),
           tag("th", ["やるべきこと"]),
         ]),
       ]),
@@ -370,7 +369,7 @@ const submit = setCallback($.btn.result, ["onclick"], () => {
                 tag("td", [p.year]),
                 tag("td", [p.age]),
                 tag("td", [getYakuYear(p.age)]),
-                tag("td", [`${p.result} (${numberToTaiheki(p.result)})`]),
+                tag("td", [p.result]),
                 tag("td", [numberToOverview(p.result).personalYear]),
               ]
             )
